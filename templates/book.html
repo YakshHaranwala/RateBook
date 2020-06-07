@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <title> Rate-The-Book </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style>
+            body {
+                background-image: url("../static/background.jpg");
+                font-size: 30px;
+                text-align: -webkit-left;
+            }
+            input[type="radio"]:after{
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                top: -2px;
+                left: -1px;
+                position: relative;
+                content: '';
+                display: inline-block;
+                visibility: visible;
+                border: 2px solid white;
+            }
+
+            input[type="radio"]:checked:after {
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                top: -2px;
+                left: -1px;
+                position: relative;
+                background-color: gold;
+                content: '';
+                display: inline-block;
+                visibility: visible;
+                border: 2px solid white;
+            }
+            textarea{
+                resize: none;
+
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+    <h1 style="text-align: center; font-size: 50px;"> Rate-The-Book </h1>
+    <hr style="width: 100%; height: 5px; background-color: black; font-size: 50px">
+        <label class="table" style="background-color: rgba(150,144,153,0.78);text-align: center; width: 500px; margin-left: 300px; border: 3px solid black;">
+            <h2> Book ID: {{ bookOne.id }}</h2>
+            <h2> Title: {{ bookOne.title }}</h2>
+            <h2> Author: {{ bookOne.author }}</h2>
+            <h2> Published: {{ bookOne.year }}</h2>
+            <h2> Good-reads Rating-count: {{ count }}</h2>
+            <h2> Good-reads Rating: {{ average }}</h2>
+        </label>
+        <form method="post" action='/search/{{ bookOne.title }}' style="margin-left: 50px; font-size: 15px">
+            <div style="text-align: center;">
+            <h3> Submit a Review </h3>
+            Rating: 1 <input type="radio" name="rating" value="1">
+                    2 <input type="radio" name="rating" value="2">
+                    3 <input type="radio" name="rating" value="3">
+                    4 <input type="radio" name="rating" value="4">
+                    5 <input type="radio" name="rating" value="5">
+            <br>
+            <textarea name="review" placeholder="Write a Review. (Optional)" rows="4" cols="50"></textarea>
+            <br>
+            <br>
+            <button> Submit </button>
+            </div>
+        </form>
+        <h1 align="center"><u> Reviews </u></h1>
+        {% for rev in review %}
+            <label style="background-color: rgba(150,144,153,0.78);border: 2px solid black; width: 1150px; height: 200px;">
+                <h3 style="float: left;"> Review By:  </h3> &nbsp;{{ rev.username }}
+            <br>
+                <h3 style="float: left;"> Rating: </h3> &nbsp;{{ rev.rating }}&#9733;
+            <br>
+                <h2 style="float: left;"> Comment: </h2> &nbsp;{{ rev.review }}
+            <br>
+            </label>
+        {% endfor %}
+    <br>
+    <div class="alert-danger" style="text-align: center">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <br>
+    <form action="{{ url_for('index') }}" method="GET">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button> Logout </button>
+    </form>
+    </div>
+    </body>
+</html>

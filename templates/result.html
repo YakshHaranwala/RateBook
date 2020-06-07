@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title> Rate-The-Book </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style>
+            .row > div {
+                text-align: center;
+                font-size: 25px;
+                padding: 10px;
+                border: 1px solid black;
+                background-color: lightskyblue;
+                }
+            body{
+                background-image: url("../static/background.jpg");
+                 font-size: 25px;
+                 text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+    <h1 style="text-align: center; font-size: 50px;"> Rate-The-Book </h1>
+    <div class="container-fluid">
+    <hr style="width: 100%; height: 5px; background-color: black;">
+        <div class="row" style="margin-left: 300px;">
+            <div class="col-3">
+                <h3>Book Name</h3>
+            </div>
+            <div class="col-3">
+                <h3>Author</h3>
+            </div>
+            <div class="col-3">
+                <h3>Link</h3>
+            </div>
+        </div>
+
+
+    {% for res in result %}
+        <div class="row" style="margin-left: 300px; border-bottom: none;">
+            <div class="col-3" style="border-top: none;">
+                {{ res.title }}
+            </div>
+            <div class="col-3" style="border-top: none;">
+                {{ res.author }}
+            </div>
+            <div class="col-3" style="border-top: none;">
+                <a href="/search/{{ res.title }}"> See More</a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for m in messages %}
+                <h3> {{ m }} </h3>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br>
+    <form action="{{ url_for('search') }}" method="GET">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="background-color: #818182; width: 200px; height: 50px; font-size: 25px;"> Back </button>
+    </form>
+    <form action="{{ url_for('index') }}" method="GET">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button style="background-color: #818182; width: 200px; height: 50px; font-size: 25px;"> Logout </button>
+    </form>
+    </body>
+</html>

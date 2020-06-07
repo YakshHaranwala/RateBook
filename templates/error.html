@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center; font-size: 75px;"> {{message}} </h1>
+    <h2 style="text-align: center; font-size: 30px;"><a href="{{ url_for(way) }}"> Click here to return to previous page. </a> </h2>
+
+{% endblock %}
+
+

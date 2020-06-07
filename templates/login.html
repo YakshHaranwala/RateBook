@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Rate-The-Book </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style>
+            body{
+                background-image: url('../static/background.jpg');
+                font-size: 25px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container-lg">
+        <h1 style="text-align: center; font-size: 75px; font-style: italic; "> Rate-The-Book </h1>
+        <hr style="height: 5px; background-color: #533f03;">
+    <div class="container-md">
+        <form method="post" action="{{ url_for('index') }} ">
+            User-Name: <label>
+            <input type="text" name="username" placeholder="Enter User-Name" style="background-color: #e9ecef ">
+        </label>
+            <br>
+            <br>
+            &nbsp;&nbsp;Password : <label>
+            <input type="password" name="password" placeholder="Enter Password" style="background-color: #e9ecef">
+        </label>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button style="background-color: #e9ecef;width: 150px; height: 50px;"> Login </button>
+            <br>
+        </form>
+    </div>
+        <br>
+        {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                   <div class="alert-danger">
+                   {% for m in messages %}
+                       <h3> {{ m }} </h3>
+                   {% endfor %}
+                   </div>
+               {% endif %}
+        {% endwith %}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="alert-primary">
+            For registering with our website, click on login button to activate the Registration link
+        </div>
+        <br>
+        <div class="alert-primary">
+            To Reset your password, Enter your username and click the login button to activate the Password Reset link.
+        </div>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+    <title> Search </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style>
+            body {
+                background-image: url("../static/background.jpg");
+                font-size: 20px;
+                text-align: center;
+            }
+        </style>
+
+    <body>
+    <div class="container-lg">
+            <h1 style="text-align: center; font-size: 50px;"> Rate-The-Book </h1>
+            <hr style="width: 100%; height: 5px; background-color: black;">
+            <h2 style="text-align: center; font-size: 30px;"> Book Search </h2>
+        <div class="container-md">
+            <div class="container-sm">
+                <form action="{{ url_for('search') }}" method="POST">
+                    <br>
+                    <br>
+                    <br>
+                    <label style="text-align: center; width: 500px; font-size: 25px;">
+                    Search: <input type="text" name="entity" placeholder="Enter the Search query"
+                                   style="background-color: #e9ecef; height: 35px; width: 265px;">
+                    <br>
+                    Search By:
+                    <input type="radio" name="search" value="Title" checked> Title
+                    <input type="radio" name="search" value="ISBN"> ISBN
+                    <input type="radio" name="search" value="Author"> Author
+                    <input type="radio" name="search" value="Year"> Year
+                    <br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button style="background-color: #e9ecef; width: 150px; height: 45px;"> Search </button>
+                    </label>
+                </form>
+                <form action="{{ url_for('index') }}" method="GET">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     &nbsp;&nbsp;&nbsp;
+                     <button> Logout </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
