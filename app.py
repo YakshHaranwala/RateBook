@@ -62,7 +62,6 @@ def reset():
             return render_template("success.html", message="Password Reset Successfully!")
 
 
-
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "GET":
@@ -99,12 +98,7 @@ def register():
             db.execute("INSERT into users values (:first, :last, :username, :password)",
                        {"first": fname, "last": lname, "username": uname, "password": password})
             db.commit()
-            return render_template(url_for('success'), message="Registration Successful")
-
-
-@app.route("/success", methods=["GET", "POST"])
-def success():
-    return render_template("success.html")
+            return render_template("success.html",message="Registration Successful")
 
 
 @app.route('/search', methods=["GET", "POST"])
@@ -116,7 +110,6 @@ def search():
             return render_template("error.html", message="Please enter a Valid Search Entity", way='search')
         elif selection == "Title":
             result = db.execute(f"SELECT * from books where lower(title) like '%{search.lower()}%'").fetchall()
-            #print(result)
             if len(result) == 0:
                 return render_template("error.html", message="No books matching with your query found!", way='search')
             else:
@@ -128,7 +121,7 @@ def search():
                 return render_template("error.html", message="Invalid Search Query. Please use Digits Only!",
                                        way='search')
             result = db.execute(f"SELECT * from books where isbn = :isbn", {'isbn':search}).fetchall()
-            #print(result)
+
             if len(result) == 0:
                 return render_template("error.html", message="No books matching with your query found!", way='search')
             else:
@@ -160,10 +153,8 @@ def search():
 @app.route("/search/<string:title>", methods=["POST","GET"])
 def book(title):
     bookOne = db.execute("SELECT * from books where title=:title", {"title":title}).fetchone()
-    print(bookOne.isbn)
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
                        params={"key": 'PTFEUxIqbb8YwBZAfiqIkQ', "isbns": str(bookOne.isbn)})
-    print(res.status_code)
     if res.status_code == 404:
         raise Exception("ERROR: API request unsuccesful!")
     data = res.json()
@@ -174,7 +165,6 @@ def book(title):
     else:
         if request.method == "GET":
             review = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
-            #print(review)
             return render_template("book.html", bookOne=bookOne, review=review, average=average, count=count)
 
         else:
@@ -183,17 +173,20 @@ def book(title):
             rev = request.form.get("review")
             review = db.execute("SELECT * from reviews where username = :username and book = :book", {"username":user,"book":title}).fetchone()
             if review is None:
-                db.execute("INSERT into reviews (book,username,rating,review) VALUES (:book, :username,:rating, :review)",
+                if rate is None:
+                    flash("Please Rate the Book!")
+                    return redirect(url_for('book'))
+                else:
+                    db.execute("INSERT into reviews (book,username,rating,review) VALUES (:book, :username,:rating, :review)",
                                 {"book":title, "username":user, "rating":rate,"review":rev})
-                db.commit()
-                flash("Review Submitted Successfully!")
-                all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
-                return render_template("book.html", review=all, bookOne=bookOne)
+                    db.commit()
+                    flash("Review Submitted Successfully!")
+                    all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
+                    return render_template("book.html", review=all, bookOne=bookOne)
             else:
                 flash("You Cannot Submit More than One review for a book!")
                 all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
                 return render_template("book.html", bookOne=bookOne, review=all)
-
 
 
 @app.route("/logged")
