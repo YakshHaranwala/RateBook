@@ -183,16 +183,21 @@ def book(title):
             rev = request.form.get("review")
             review = db.execute("SELECT * from reviews where username = :username and book = :book", {"username":user,"book":title}).fetchone()
             if review is None:
-                db.execute("INSERT into reviews (book,username,rating,review) VALUES (:book, :username,:rating, :review)",
+                if rate == '':
+                    flash("Please Rate the Book!")
+                    return redirect(url_for('book'))
+                else:
+                    db.execute("INSERT into reviews (book,username,rating,review) VALUES (:book, :username,:rating, :review)",
                                 {"book":title, "username":user, "rating":rate,"review":rev})
-                db.commit()
-                flash("Review Submitted Successfully!")
-                all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
-                return render_template("book.html", review=all, bookOne=bookOne)
+                    db.commit()
+                    flash("Review Submitted Successfully!")
+                    all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
+                    return render_template("book.html", review=all, bookOne=bookOne)
             else:
                 flash("You Cannot Submit More than One review for a book!")
                 all = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
                 return render_template("book.html", bookOne=bookOne, review=all)
+
 
 
 @app.route("/logged")
