@@ -158,8 +158,11 @@ def book(title):
     if res.status_code == 404:
         raise Exception("ERROR: API request unsuccesful!")
     data = res.json()
-    average = data['books'][0]['average_rating']
-    count = data['books'][0]['work_ratings_count']
+    try:
+        average = data['books'][0]['average_rating']
+        count = data['books'][0]['work_ratings_count']
+    except:
+        return render_template("error.html",message="Eror! API request Unsuccessful!")
     if bookOne is None:
         return render_template("error.html", message="No Information about the book found!", way='search')
     else:
