@@ -153,18 +153,17 @@ def search():
 @app.route("/search/<string:title>", methods=["POST","GET"])
 def book(title):
     bookOne = db.execute("SELECT * from books where title=:title", {"title":title}).fetchone()
+    if bookOne is None:
+        return render_template("error.html", message="No Information about the book found!", way='search')
     res = requests.get("https://www.goodreads.com/book/review_counts.json",
                        params={"key": 'PTFEUxIqbb8YwBZAfiqIkQ', "isbns": str(bookOne.isbn)})
     if res.status_code == 404:
         raise Exception("ERROR: API request unsuccesful!")
     data = res.json()
-    try:
-        average = data['books'][0]['average_rating']
-        count = data['books'][0]['work_ratings_count']
-    except:
-        return render_template("error.html",message="Eror! API request Unsuccessful!")
-    if bookOne is None:
-        return render_template("error.html", message="No Information about the book found!", way='search')
+    average = data['books'][0]['average_rating']
+    count = data['books'][0]['work_ratings_count']
+    if average == '' or count == '':
+        return render_template("error.html", message="ERROR! API request unsuccessful!")
     else:
         if request.method == "GET":
             review = db.execute("SELECT * from reviews where book = :book", {"book":title}).fetchall()
