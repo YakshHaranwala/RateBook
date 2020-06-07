@@ -99,7 +99,7 @@ def register():
             db.execute("INSERT into users values (:first, :last, :username, :password)",
                        {"first": fname, "last": lname, "username": uname, "password": password})
             db.commit()
-        return render_template(url_for('success'), message="Registration Successful")
+            return render_template(url_for('success'), message="Registration Successful")
 
 
 @app.route("/success", methods=["GET", "POST"])
